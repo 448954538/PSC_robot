@@ -112,7 +112,7 @@ global sub PS2_init()
 	putchar #0,PS2_lx3' 设置字节长度
 	putchar #0,PS2_lx4'退出配置模式
 	
-	'扫描
+	'扫描 
 	putchar #0, PS2_scan
 	get #0, RS232_rx,9
 end sub
@@ -142,6 +142,8 @@ global sub SET_Modbus_wheel_addr() '改动无效
 	?"Modbus地址修改成功:" modbus_reg(0)
 	
 end sub
+
+
 
 global sub SET_Modbus_brush_addr()
 	setcom(38400,8,1,0,1,14,2,1000)	'设置串口1为modbus主  刷子38400 
