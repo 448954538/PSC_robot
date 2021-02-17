@@ -12,6 +12,13 @@ GLOBAL ZVOBJECT image ,image1
 GLOBAL DIM  d_cam_expostime          '定义并相机曝光时间
             
 
+
+GLOBAL DIM modbus_status 'modbus指令控制
+GLOBAL DIM wheel_cmd,brush_cmd 'modbus指令控制
+GLOBAL DIM Battery_V,Battery_I,Battery_Temp,Battery_W '电池参数
+GLOBAL DIM Pressure_value '传感器压力参数
+
+
 '手柄配置指令
 GLOBAL DIM PS2_SPI(5) 'SPI mode=03  100K
 PS2_SPI(0,$10,$03,$42,$00,$64)
