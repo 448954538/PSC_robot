@@ -29,7 +29,7 @@ global sub PS2_init()
 	get #0, RS232_rx,9
 end sub
 
-global sub PS2_Read()		
+global sub PS2_Read()
 	DIM funbtn
 	putchar #0, PS2_scan
 	get #0, RS232_rx,9

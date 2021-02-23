@@ -54,18 +54,15 @@ global sub task_modbus()			'485总线 modbus协议读写
 	wend
 end sub
 
-
 global sub SET_Modbus_wheel_addr() '改动无效
 	setcom(115200,8,1,0,1,14,2,1000)	'设置串口1为modbus主  轮毂115200 
 	MODBUSM_des(1,1)'设置对方 port 为1
 	delay 10
 	modbus_reg(0) = 3	'地址
-	MODBUSM_regset($2001,1,0)'本地复制到远端
+	MODBUSM_regset($2001,1,0)'本地复制到远端 
 	?"Modbus地址修改成功:" modbus_reg(0)
 	
 end sub
-
-
 
 global sub SET_Modbus_brush_addr()
 	setcom(38400,8,1,0,1,14,2,1000)	'设置串口1为modbus主  刷子38400 
@@ -145,17 +142,49 @@ global sub move_back()			'
 		MODBUSM_regset($2083,1,0)'本地复制到远端 右减速
 		modbus_reg(0) = $0008' 
 		MODBUSM_regset($200E,1,0)'本地复制到远端 使能
-		modbus_reg(0) = $0082 ' 
+		modbus_reg(0) = $FF9C ' 
 		MODBUSM_regset($2088,1,0)'本地复制到远端 启动速度
 		MODBUSM_regset($2089,1,0)'本地复制到远端 启动速度
 end sub
 
 global sub move_left()
-
+	'轮毂
+	setcom(115200,8,1,0,1,14,2,1000)	'设置串口1为modbus主  轮毂115200 
+	MODBUSM_des(1,1)'设置对方address=1 port 为1
+	delay 10
+		modbus_reg(0) = $0003	'速度控制
+		MODBUSM_regset($200D,1,0)'本地复制到远端
+		modbus_reg(0) = $01F4' 电机加减速时间
+		MODBUSM_regset($2080,1,0)'本地复制到远端 左加速
+		MODBUSM_regset($2081,1,0)'本地复制到远端 右加速
+		MODBUSM_regset($2082,1,0)'本地复制到远端 左减速
+		MODBUSM_regset($2083,1,0)'本地复制到远端 右减速
+		modbus_reg(0) = $0008' 
+		MODBUSM_regset($200E,1,0)'本地复制到远端 使能
+		modbus_reg(0) = $FF9C ' 
+		MODBUSM_regset($2088,1,0)'本地复制到远端 启动速度
+		modbus_reg(0) = $0064 '
+		MODBUSM_regset($2089,1,0)'本地复制到远端 启动速度
 end sub
 
 global sub move_right()
-
+	'轮毂
+	setcom(115200,8,1,0,1,14,2,1000)	'设置串口1为modbus主  轮毂115200 
+	MODBUSM_des(1,1)'设置对方address=1 port 为1
+	delay 10
+		modbus_reg(0) = $0003	'速度控制
+		MODBUSM_regset($200D,1,0)'本地复制到远端
+		modbus_reg(0) = $01F4' 电机加减速时间
+		MODBUSM_regset($2080,1,0)'本地复制到远端 左加速
+		MODBUSM_regset($2081,1,0)'本地复制到远端 右加速
+		MODBUSM_regset($2082,1,0)'本地复制到远端 左减速
+		MODBUSM_regset($2083,1,0)'本地复制到远端 右减速
+		modbus_reg(0) = $0008' 
+		MODBUSM_regset($200E,1,0)'本地复制到远端 使能
+		modbus_reg(0) = $0064 ' 
+		MODBUSM_regset($2088,1,0)'本地复制到远端 启动速度
+		modbus_reg(0) = $FF9C '
+		MODBUSM_regset($2089,1,0)'本地复制到远端 启动速度
 end sub
 
 
@@ -166,9 +195,10 @@ global sub move_stop()
 		modbus_reg(0) = $0007' 停止
 		MODBUSM_regset($200E,1,0)'本地复制到远端
 		
-		end sub 
+end sub 
+
 global sub brush_50A_start()			'
-	
+
 	'50A
 	setcom(38400,8,1,0,1,14,2,1000)	'设置串口1为modbus主  刷子38400 
 	MODBUSM_des(4,1)'设置对方address=4 port 为1
@@ -212,7 +242,6 @@ global sub brush_100A_start()
 		MODBUSM_regset($0022,1,0)'本地复制到远端
 		delay 10
 end sub
-
 
 global sub brush_100A_stop()
 	setcom(38400,8,1,0,1,14,2,1000)	'设置串口1为modbus主  刷子38400

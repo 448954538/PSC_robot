@@ -80,7 +80,6 @@ GLOBAL SUB btn_con_grap()
 END SUB
 
 
-
 'HMI界面按下停止采集按钮时响应的函数
 GLOBAL SUB btn_stop_grab()
 

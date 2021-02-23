@@ -84,8 +84,6 @@ wend
 end
 
 
-
-
 global sub vacuum_start()	 '		
 		MOVE_PWM(1, 0.6, 1000) ' 0.8脉宽不启动 0.6脉宽 峰值3A电流	
 end sub

@@ -11,8 +11,7 @@ GLOBAL ZVOBJECT image ,image1
 
 GLOBAL DIM  d_cam_expostime          '定义并相机曝光时间
             
-
-
+			
 GLOBAL DIM modbus_status 'modbus指令控制
 GLOBAL DIM wheel_cmd,brush_cmd 'modbus指令控制
 GLOBAL DIM Battery_V,Battery_I,Battery_Temp,Battery_W '电池参数
@@ -49,6 +48,7 @@ GLOBAL DIM PS2_X1
 GLOBAL DIM PS2_Y1
 GLOBAL DIM PS2_X2
 GLOBAL DIM PS2_Y2
+
 
 GLOBAL DIM RS232_rx(10) '串口接收缓存
 
