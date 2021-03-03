@@ -3,7 +3,7 @@ ERRSWITCH = 3'打印开关
 set_xplcterm=1
 grap_switch=0
 grab_task_id=5
- d_cam_expostime = 500000
+d_cam_expostime = 500000
 
 setcom(115200,8,1,0,0,0,0,1000)	'设置串口0为RAW数据模式
 setcom(9600,8,1,0,1,14,2,1000)	'设置串口1为modbus主  轮毂115200 刷子38400 压力19200 电池9600
@@ -25,7 +25,7 @@ DIM char232(4) char_rx(3)
 flag485= 0
 while 1	'循环运动
 	
-	
+
 	if scan_event(in(0)) = on then '输入0有效左运动 							
 		'SET_Modbus_wheel_addr()
 		'SET_Modbus_brush_addr()		
@@ -35,11 +35,13 @@ while 1	'循环运动
 		'brush_100A_stop()
 		'vacuum_stop()
 		'move_front()
-		scan_all_cams()
+		'scan_all_cams()
 		'PS2_init()
+		? "in0"
+		
 		
 		OP(0,ON)
-		? "in0"
+		
 	elseif scan_event(in(1)) = on then '输入1有效右运动 
 		OP(0,OFF) 
 		? "in1" 		
@@ -48,20 +50,20 @@ while 1	'循环运动
 		'vacuum_start()
 		
 		'Read_sensor()		
-		btn_con_grap()
+		'btn_con_grap()
 		'btn_softtrigger
-		'PS2_Read()
+		PS2_Read()
 		
 	elseif scan_event(in(2)) = on then '输入1有效右运动	
 	
-		btn_stop_grab()
+		'btn_stop_grab()
 		'move_stop()
 		'brush_100A_stop()
 		'vacuum_stop()
 		
 		'Read_sensor()		
 		'Read_battery()
-		
+		RUNTASK 4,task_Ps2read
 		if flag485 = 1 THEN
 			flag485 = 0
 			'OP(0,OFF) 
@@ -78,7 +80,7 @@ while 1	'循环运动
 	end if
 	
 	
-	delay 20
+	delay 100
 wend
 
 end
@@ -108,3 +110,6 @@ global sub task_cmd()			'接受任务
 		delay 100
 	wend
 end sub
+
+
+

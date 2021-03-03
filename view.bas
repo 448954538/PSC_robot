@@ -9,6 +9,7 @@ GLOBAL SUB task_view()
 		endif
 		
 		CAM_GRAB(image)       '自由采集模式下，采集一帧图像
+		CAM_GRAB(image)       '自由采集模式下，采集一帧图像
 		'CAM_SETPARAM("TriggerSoftware", 0)		
 		'CAM_GET(image,0)
 		ZV_LATCH(image,0)     '将采集图像显示到图片元件中

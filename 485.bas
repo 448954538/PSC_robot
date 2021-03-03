@@ -109,6 +109,20 @@ global sub Read_sensor()
 		endif	
 end sub
 
+global sub move_init() '改动无效
+	setcom(115200,8,1,0,1,14,2,1000)	'设置串口1为modbus主  轮毂115200 
+	MODBUSM_des(1,1)'设置对方address=1 port 为1
+	delay 10
+	modbus_reg(0) = $0003	'速度控制
+	MODBUSM_regset($200D,1,0)'本地复制到远端
+	modbus_reg(0) = $01F4' 电机加减速时间
+	MODBUSM_regset($2080,1,0)'本地复制到远端 左加速
+	MODBUSM_regset($2081,1,0)'本地复制到远端 右加速
+	MODBUSM_regset($2082,1,0)'本地复制到远端 左减速
+	MODBUSM_regset($2083,1,0)'本地复制到远端 右减速
+	
+end sub
+
 global sub move_front()			'
 
 	'轮毂
@@ -128,6 +142,7 @@ global sub move_front()			'
 		MODBUSM_regset($2088,1,0)'本地复制到远端 启动速度
 		MODBUSM_regset($2089,1,0)'本地复制到远端 启动速度
 end sub
+
 global sub move_back()			'
 	'轮毂
 	setcom(115200,8,1,0,1,14,2,1000)	'设置串口1为modbus主  轮毂115200 
@@ -250,3 +265,4 @@ global sub brush_100A_stop()
 	modbus_reg(0) = $0000	'
 	MODBUSM_regset($0022,1,0)'本地复制到远端
 end sub
+
