@@ -10,11 +10,17 @@ GLOBAL DIM cap_mode
 GLOBAL ZVOBJECT image ,image1 
 
 GLOBAL DIM  d_cam_expostime          '定义并相机曝光时间
-            
+d_cam_expostime = 500000
 			
+GLOBAL DIM global_ems
+global_ems = 0
+GLOBAL DIM global_run
+global_run = 0
+ 
 GLOBAL DIM modbus_status 'modbus指令控制
-GLOBAL DIM wheel_cmd,brush_cmd 'modbus指令控制
-GLOBAL DIM Battery_V,Battery_I,Battery_Temp,Battery_W '电池参数
+GLOBAL DIM wheel_cmd,brush_cmd '轮毂控制、钢刷控制
+GLOBAL DIM	wheel_speed_l,wheel_speed_r	'轮毂速度
+GLOBAL DIM Battery_V,Battery_I,Battery_Temp,Battery_P '电池参数
 GLOBAL DIM Pressure_value '传感器压力参数
 
 
@@ -89,8 +95,19 @@ GLOBAL DIM PS2_Y1
 GLOBAL DIM PS2_X2
 GLOBAL DIM PS2_Y2
 
+'手柄指令解码
+GLOBAL DIM PS2_front
+GLOBAL DIM PS2_back
+GLOBAL DIM PS2_left
+GLOBAL DIM PS2_right
+GLOBAL DIM PS2_ems
+GLOBAL DIM PS2_run
+
 GLOBAL DIM CHARES
 GLOBAL DIM RS232_rx(10) '串口接收缓存
 
 
+GLOBAL DIM MOVE_speed_ratio
+
+MOVE_speed_ratio = 3
 
