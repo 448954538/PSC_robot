@@ -5,7 +5,6 @@ set_xplcterm=0
 grap_switch=0
 grab_task_id=5
 
-
  
 DIM char1 flag485
 DIM BAT_ARRAY(14)
