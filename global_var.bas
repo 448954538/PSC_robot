@@ -4,25 +4,36 @@ GLOBAL DIM cam_num
 			cam_num=0
 			
 GLOBAL DIM grap_switch
+
+GLOBAL DIM task_modbus_id
+task_modbus_id = 2
 GLOBAL DIM grab_task_id
+grab_task_id = 3
+GLOBAL DIM task_Ps2read_id
+task_Ps2read_id = 4
+GLOBAL DIM task_deamon_id
+task_deamon_id = 5
 
 GLOBAL DIM cap_mode
 GLOBAL ZVOBJECT image ,image1 
 
 GLOBAL DIM  d_cam_expostime          '定义并相机曝光时间
-d_cam_expostime = 500000
-			
+d_cam_expostime = 50000
+
+
+GLOBAL DIM global_status 
+global_status=0		
 GLOBAL DIM global_ems
 global_ems = 0
 GLOBAL DIM global_run
 global_run = 0
- 
+
 GLOBAL DIM modbus_status 'modbus指令控制
 GLOBAL DIM wheel_cmd,brush_cmd '轮毂控制、钢刷控制
 GLOBAL DIM	wheel_speed_l,wheel_speed_r	'轮毂速度
 GLOBAL DIM Battery_V,Battery_I,Battery_Temp,Battery_P '电池参数
-GLOBAL DIM Pressure_value '传感器压力参数
-
+GLOBAL DIM Pressure_value,Pressure_value1,Pressure_value2 '传感器压力参数
+GLOBAL DIM distance_f,distance_b,distance_l,distance_r'传感器参数
 
 '手柄配置指令
 GLOBAL  PS2_SPI(5) 'SPI mode=03  100K  低位在前
@@ -105,9 +116,52 @@ GLOBAL DIM PS2_run
 
 GLOBAL DIM CHARES
 GLOBAL DIM RS232_rx(10) '串口接收缓存
+GLOBAL DIM battery_rx(19) '电池接收缓存
 
 
+GLOBAL DIM brush_start_flag
+brush_start_flag = 0
+GLOBAL DIM vacuum_start_flag
+vacuum_start_flag = 0
+GLOBAL DIM move_start_flag
+move_start_flag = 0
+
+GLOBAL DIM task_Ps2read_flag
+task_Ps2read_flag = 0
+
+GLOBAL DIM read_battery_time
+read_battery_time = 50
+
+GLOBAL DIM read_sensor_time
+read_sensor_time = 3
+
+GLOBAL DIM safe_distance
+safe_distance = 40
+
+GLOBAL DIM Pressure_th
+Pressure_th = 100
+
+
+GLOBAL DIM MOVE_speed_s_r
+MOVE_speed_s_r = 40 
+GLOBAL DIM MOVE_speed_f_r
+MOVE_speed_f_r = 5
 GLOBAL DIM MOVE_speed_ratio
+MOVE_speed_ratio = MOVE_speed_f_r
+GLOBAL DIM MOVE_speed
 
-MOVE_speed_ratio = 3
 
+GLOBAL DIM sw_speed_cnt_b
+GLOBAL DIM Sw_speed_time_b
+Sw_speed_time_b = 10
+
+GLOBAL DIM sw_speed_cnt_m
+GLOBAL DIM Sw_speed_time_m
+Sw_speed_time_m = 10
+
+GLOBAL DIM brush_speed_s
+brush_speed_s = 500 
+GLOBAL DIM brush_speed_f
+brush_speed_f = 1000
+GLOBAL DIM brush_speed
+brush_speed = brush_speed_s

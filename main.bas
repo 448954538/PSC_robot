@@ -1,7 +1,8 @@
 ERRSWITCH = 3'打印开关
 ' RUN "global_var.bas",10
  
-set_xplcterm=0
+set_xplcterm=1 'hdmi
+'set_xplcterm=0  'pc
 grap_switch=0
 grab_task_id=5
 
@@ -14,36 +15,53 @@ flag485= 0
 setcom(115200,8,1,0,0,0,0,1000)	'设置串口0为RAW数据模式
 setcom(9600,8,1,0,1,14,2,1000)	'设置串口1为modbus主  轮毂115200 刷子38400 压力38400 电池9600
  
-
+ 
 MODBUSM_des(1,1)'设置对方address=1 port 为1 
 
 	delay 500
-	RUNTASK 2,task_modbus		'启动485总线线程 modbus读写
-   ' RUNTASK 3,task_view		'启动显示线程
-    RUNTASK 4,task_Ps2read		'启动手柄读取线程
-    'RUNTASK 5,task_cmd		' 测试线程
+	RUNTASK task_modbus_id,task_modbus		'启动485总线线程 modbus读写
+   ' RUNTASK grab_task_id,task_view		'启动显示线程
+   RUNTASK task_Ps2read_id,task_Ps2read		'启动手柄读取线程
+   RUNTASK task_deamon_id,task_deamon		' 测试线程
    
 '指令列表
 vacuum_stop()
+'OP(4,ON)'
+alarm_off()	
 
-while 1	'循环
+
+while 1	'循环'
 	
-	if PS2_ems = 1 THEN
+	MOVE_speed = wheel_speed_l * 10 '运动速度换算
+	
+	if PS2_ems = 1 or  in(3) = on	THEN
 		global_ems = 1
+		EMC_stop()
 	ELSE
 		global_ems = 0
+		alarm_off()
 	end if 
+	
 	
 	if PS2_run = 1 THEN
 		global_run = 1
 	ELSE
 		global_run = 0
 	end if 
-	
+
+	 if Pressure_value > Pressure_th THEN
+		alarm_on()
+		delay   500
+		alarm_off()
+		delay   500
+	 ELSE
+		'alarm_off()
+	 end if
+	 
 	if scan_event(in(0)) = on then '输入0有效左运动 							
 		'SET_Modbus_wheel_addr()
 		'SET_Modbus_brush_addr()		
-		Read_battery()		
+		'Read_battery()		
 		'Read_battery()
 		'delay 1000
 		'brush_100A_stop()
@@ -54,10 +72,10 @@ while 1	'循环
 		
 		? "in0"
 		
-		OP(0,ON)
+		'OP(0,ON)
 		
 	elseif scan_event(in(1)) = on then '输入1有效右运动 
-		OP(0,OFF) 
+		'OP(0,OFF) 
 		? "in1" 	
 		'move_back()
 		'Read_wheel_status()
@@ -89,6 +107,8 @@ while 1	'循环
 		end if
 		
 		? "in2" 
+	
+	
 	elseif (not idle) then
 		
 		cancel
@@ -103,48 +123,49 @@ end
 global sub EMC_stop()			'
 		M_stop()
 		B_stop()	
-		alarm_off()
+		alarm_on()
 		light_off()
 		'断电io	
 end sub
 
 global sub EMS_on()			'
-	OP(0,ON) 	  	
+	OP(4,ON) 	  	
 end sub
 
 global sub EMS_off()			'
-	OP(0,ON) 	  	
+	OP(4,Off) 	  	
 end sub
 
 global sub alarm_on()			'
-	OP(1,ON) 	  	
+	OP(3,ON)
+	'? "out3 on"	 	  	
 end sub
 
 global sub alarm_off()			'
-	OP(1,OFF) 	  	
+	OP(3,OFF) 
+	'? "out3 off"	  	
 end sub
 
 global sub light_on()			'
-	OP(2,ON)	  	
+	OP(5,ON)	  	
 end sub
 
 global sub light_off()			'
-	OP(2,OFF)	  	
+	OP(5,OFF)	  	
 end sub
 
-global sub task_cmd()			'接受任务
+global sub task_deamon()			'接受任务
 	
 	while 1
-		'MODBUSM_REGGET($0050,2,10)'读取压力传感数据	
-		'if(MODBUS_REG(11) >= 0  )  then    '有接受到数据
-		'	MODBUS_REG(13) = MODBUS_REG(10)
-		'	MODBUS_REG(12) = MODBUS_REG(11)
-		'	?"压力",MODBUS_LONG(12)
-		'endif	
-		'MODBUSM_REGGET($0000,30,10)
-		'?"电池信息:"MODBUS_REG(10), MODBUS_REG(11),MODBUS_REG(12), MODBUS_REG(12)		
-		
-		delay 100
+		'手柄遥控读写守护进程
+		task_Ps2read_flag = 0
+		delay 500
+		if 	task_Ps2read_flag = 0  THEN
+			EMC_stop()
+			STOPTASK task_Ps2read_id		'启动手柄读取线程
+			delay 10
+			RUNTASK task_Ps2read_id,task_Ps2read		'启动手柄读取线程
+		end if
 	wend
 end sub
 

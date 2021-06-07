@@ -1,4 +1,5 @@
 
+
 '自由采集任务
 GLOBAL SUB task_view()
 	'CAM_START(1)
@@ -9,21 +10,25 @@ GLOBAL SUB task_view()
 	while(1)
 		if (0 = grap_switch) then
 			exit while
-		endif		
-		CAM_SEL(0) 
-		CAM_GRAB(image)       '自由采集模式下，采集一帧图像
-		ZV_LATCH(image,0)     '将采集图像显示到图片元件中
-		
-		CAM_SEL(1)
-		CAM_GRAB(image1)       '自由采集模式下，采集一帧图像
-		ZV_LATCH(image1,1)     '将采集图像显示到图片元件中
+		endif	
+		if cam_num > 0 THEN	
+			CAM_SEL(0) 
+			CAM_GRAB(image)       '自由采集模式下，采集一帧图像
+			ZV_LATCH(image,0)     '将采集图像显示到图片元件中
+			'? "采集完成"
+			'CAM_SEL(1)
+			'CAM_GRAB(image1)       '自由采集模式下，采集一帧图像
+			'ZV_LATCH(image1,1)     '将采集图像显示到图片元件中
+		ELSE
+			? "请检查相机连接！"
+		end if
 	wend
 END
 
 GLOBAL SUB init_cams()
 
 	scan_all_cams()
-	if (cam_num<2) then        '如果没有扫描相机，提示先扫描相机
+	if (cam_num<1) then        '如果没有扫描相机，提示先扫描相机
      ? "请检查相机连接！相机数：",cam_num
      return
 	endif
@@ -32,7 +37,7 @@ GLOBAL SUB init_cams()
     CAM_SEL(0)           '选择第一个相机
    ?"选择第一个相机"
    
-    CAM_SETMODE(-1)      '选择相机为自由采集模式
+   CAM_SETMODE(-1)      '选择相机为自由采集模式
 	'CAM_SETMODE(0)      '选择相机为软触发采集模式
 	?"自由采集模式"
    CAM_SETEXPOSURE(d_cam_expostime)				 '设置曝光时间
@@ -40,15 +45,6 @@ GLOBAL SUB init_cams()
    CAM_SETPARAM("Height", "720")
    ?"设置曝光时间"
    
-     CAM_SEL(1)           '选择第二个相机
-   ?"选择第一个相机"
-   
-    CAM_SETMODE(-1)      '选择相机为自由采集模式
-	?"自由采集模式"
-   CAM_SETEXPOSURE(d_cam_expostime)				 '设置曝光时间
-  CAM_SETPARAM("Width", "1280")
-   CAM_SETPARAM("Height", "720")
-   ?"设置曝光时间"
   '*************结束初始化相机*********************
     
 
@@ -70,11 +66,6 @@ GLOBAL SUB scan_all_cams()
 	endif
 	
 	    ?"相机数量：" cam_num
-		'*************初始化相机操作*********************
-	    CAM_SEL(0)              '选择第一个相机
-		
-		
-	'*************结束初始化相机*********************
 
 END SUB
 
